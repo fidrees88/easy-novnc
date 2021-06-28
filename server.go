@@ -1,6 +1,3 @@
-// +build !index_generate
-// +build !novnc_generate
-
 package main
 
 import (
