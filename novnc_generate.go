@@ -15,7 +15,7 @@ import (
 
 	"github.com/shurcooL/vfsgen"
 	"github.com/spkg/zipfs"
-)
+) aD JKAShdaHDL KKJahs
 
 const noVNCZip = "https://github.com/novnc/noVNC/archive/master.zip"
 const vncScript = `
@@ -29,6 +29,12 @@ const vncScript = `
 	} catch (ex) {
 		console.log(ex);
 	}
+`
+
+const vncStyle = `
+	#noVNC_control_bar_handle{
+            visibility: hidden;
+        }
 `
 
 func main() {
@@ -108,6 +114,8 @@ func modifyZip(zf string) error {
 
 		if filepath.Base(e.Name) == "vnc.html" {
 			found = true
+			fbuf = bytes.ReplaceAll(fbuf, []byte("</head>"), []byte(fmt.Sprintf("<style>%s</style></head>", vncStyle)))
+			fbuf = bytes.ReplaceAll(fbuf, []byte("<body>"), []byte(fmt.Sprintf("<body><h1>test</h1>")))
 			fbuf = bytes.ReplaceAll(fbuf, []byte("</body>"), []byte(fmt.Sprintf("<script>%s</script></body>", vncScript)))
 			fi, err := os.Stat("novnc_generate.go")
 			if err != nil {
@@ -142,3 +150,4 @@ func modifyZip(zf string) error {
 
 	return nil
 }
+
